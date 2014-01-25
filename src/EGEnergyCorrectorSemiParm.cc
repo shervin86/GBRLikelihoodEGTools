@@ -161,23 +161,28 @@ void EGEnergyCorrectorSemiParm::Initialize(std::string regweights, int version) 
 
 }
 
-void EGEnergyCorrectorSemiParm::CorrectedEnergyWithError(const reco::Photon &p, const reco::VertexCollection& vtxcol, double rho, EcalClusterLazyTools &clustertools, const edm::EventSetup &es, double &ecor, double &cbsigma, double &cbalpha1, double &cbn1, double &cbalpha2, double &cbn2, double &pdfpeakval) {
- 
+void EGEnergyCorrectorSemiParm::CorrectedEnergyWithError(const reco::Photon &p,  const reco::VertexCollection& vtxcol, double rho, EcalClusterLazyTools &clustertools, const edm::EventSetup &es, double &ecor, double &sigEoverE, double &cbmean, double &cbsigma, double &cbalpha1, double &cbn1, double &cbalpha2, double &cbn2, double &pdfpeakval) {
+
   switch(_version){
   case 4:
     CorrectedEnergyWithErrorV4(p, vtxcol, rho, clustertools, es, ecor, cbsigma, cbalpha1, cbn1, cbalpha2, cbn2, pdfpeakval);
+    sigEoverE=-1;
+    cbmean=-1;
     break;
   case 5:
     CorrectedEnergyWithErrorV5(p, vtxcol, rho, clustertools, es, ecor, cbsigma, cbalpha1, cbn1, cbalpha2, cbn2, pdfpeakval);
+    sigEoverE=-1;
+    cbmean=-1;
     break;
   case 6:
-    CorrectedEnergyWithErrorV5(p, vtxcol, rho, clustertools, es, ecor, cbsigma, cbalpha1, cbn1, cbalpha2, cbn2, pdfpeakval);
+    CorrectedEnergyWithErrorV6(p, vtxcol, rho, clustertools, es, ecor, sigEoverE, cbmean, cbsigma, cbalpha1, cbn1, cbalpha2, cbn2, pdfpeakval);
     break;
   case 7:
-    CorrectedEnergyWithErrorV5(p, vtxcol, rho, clustertools, es, ecor, cbsigma, cbalpha1, cbn1, cbalpha2, cbn2, pdfpeakval);
+    CorrectedEnergyWithErrorV7(p, vtxcol, rho, clustertools, es, ecor, sigEoverE, cbmean, cbsigma, cbalpha1, cbn1, cbalpha2, cbn2, pdfpeakval);
     break;
   case 8:
-    CorrectedEnergyWithErrorV5(p, vtxcol, rho, clustertools, es, ecor, cbsigma, cbalpha1, cbn1, cbalpha2, cbn2, pdfpeakval);
+    CorrectedEnergyWithErrorV8(p, vtxcol, rho, clustertools, es, ecor, sigEoverE, cbmean, cbsigma, cbalpha1, cbn1, cbalpha2, cbn2, pdfpeakval);
+
     break;
   default:
     edm::LogError("EGEnergyCorrectorSemiParm") << "version not implemented in CorrectedEnergyWithError() method";
@@ -185,23 +190,28 @@ void EGEnergyCorrectorSemiParm::CorrectedEnergyWithError(const reco::Photon &p, 
   }
 }
 
-void EGEnergyCorrectorSemiParm::CorrectedEnergyWithError(const reco::GsfElectron &p, const reco::VertexCollection& vtxcol, double rho, EcalClusterLazyTools &clustertools, const edm::EventSetup &es, double &ecor, double &cbsigma, double &cbalpha1, double &cbn1, double &cbalpha2, double &cbn2, double &pdfpeakval) {
+void EGEnergyCorrectorSemiParm::CorrectedEnergyWithError(const reco::GsfElectron &p, const reco::VertexCollection& vtxcol, double rho, EcalClusterLazyTools &clustertools, const edm::EventSetup &es, double &ecor, double &sigEoverE, double &cbmean, double &cbsigma, double &cbalpha1, double &cbn1, double &cbalpha2, double &cbn2, double &pdfpeakval) {
  
   switch(_version){
   case 4:
     CorrectedEnergyWithErrorV4(p, vtxcol, rho, clustertools, es, ecor, cbsigma, cbalpha1, cbn1, cbalpha2, cbn2, pdfpeakval);
+    sigEoverE=-1;
+    cbmean=-1;
     break;
   case 5:
     CorrectedEnergyWithErrorV5(p, vtxcol, rho, clustertools, es, ecor, cbsigma, cbalpha1, cbn1, cbalpha2, cbn2, pdfpeakval);
+    sigEoverE=-1;
+    cbmean=-1;
     break;
   case 6:
-    CorrectedEnergyWithErrorV5(p, vtxcol, rho, clustertools, es, ecor, cbsigma, cbalpha1, cbn1, cbalpha2, cbn2, pdfpeakval);
+    CorrectedEnergyWithErrorV6(p, vtxcol, rho, clustertools, es, ecor, sigEoverE, cbmean, cbsigma, cbalpha1, cbn1, cbalpha2, cbn2, pdfpeakval);
     break;
   case 7:
-    CorrectedEnergyWithErrorV5(p, vtxcol, rho, clustertools, es, ecor, cbsigma, cbalpha1, cbn1, cbalpha2, cbn2, pdfpeakval);
+    CorrectedEnergyWithErrorV7(p, vtxcol, rho, clustertools, es, ecor, sigEoverE, cbmean, cbsigma, cbalpha1, cbn1, cbalpha2, cbn2, pdfpeakval);
     break;
   case 8:
-    CorrectedEnergyWithErrorV5(p, vtxcol, rho, clustertools, es, ecor, cbsigma, cbalpha1, cbn1, cbalpha2, cbn2, pdfpeakval);
+    CorrectedEnergyWithErrorV8(p, vtxcol, rho, clustertools, es, ecor, sigEoverE, cbmean, cbsigma, cbalpha1, cbn1, cbalpha2, cbn2, pdfpeakval);
+
     break;
   default:
     edm::LogError("EGEnergyCorrectorSemiParm") << "version not implemented in CorrectedEnergyWithError() method";
