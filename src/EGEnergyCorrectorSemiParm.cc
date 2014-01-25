@@ -60,6 +60,10 @@ EGEnergyCorrectorSemiParm::~EGEnergyCorrectorSemiParm()
 //--------------------------------------------------------------------------------------------------
 void EGEnergyCorrectorSemiParm::Initialize(std::string regweights, int version) {
     _version= version;    
+    if(regweights.size()<=1 || regweights=="nocorrection"){
+      _isInitialized = kFALSE;
+      return;
+    }
     if (version>=4 && version<=5) {
 
       //initialize eval vector
@@ -163,6 +167,11 @@ void EGEnergyCorrectorSemiParm::Initialize(std::string regweights, int version) 
 
 void EGEnergyCorrectorSemiParm::CorrectedEnergyWithError(const reco::Photon &p,  const reco::VertexCollection& vtxcol, double rho, EcalClusterLazyTools &clustertools, const edm::EventSetup &es, double &ecor, double &sigEoverE, double &cbmean, double &cbsigma, double &cbalpha1, double &cbn1, double &cbalpha2, double &cbn2, double &pdfpeakval) {
 
+  if(!_isInitialized){
+    ecor=-1;
+    sigEoverE=-1;
+  }
+
   switch(_version){
   case 4:
     CorrectedEnergyWithErrorV4(p, vtxcol, rho, clustertools, es, ecor, cbsigma, cbalpha1, cbn1, cbalpha2, cbn2, pdfpeakval);
@@ -191,6 +200,11 @@ void EGEnergyCorrectorSemiParm::CorrectedEnergyWithError(const reco::Photon &p, 
 }
 
 void EGEnergyCorrectorSemiParm::CorrectedEnergyWithError(const reco::GsfElectron &p, const reco::VertexCollection& vtxcol, double rho, EcalClusterLazyTools &clustertools, const edm::EventSetup &es, double &ecor, double &sigEoverE, double &cbmean, double &cbsigma, double &cbalpha1, double &cbn1, double &cbalpha2, double &cbn2, double &pdfpeakval) {
+
+  if(!_isInitialized){
+    ecor=-1;
+    sigEoverE=-1;
+  }
  
   switch(_version){
   case 4:
