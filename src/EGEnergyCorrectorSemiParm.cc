@@ -39,7 +39,8 @@ _sigmalim(0),
 _n1lim(0),
 _n2lim(0),
 _pdf(0),
-_isInitialized(kFALSE)
+_isInitialized(kFALSE),
+_version(-1)
 {
   // Constructor.
 }
@@ -58,9 +59,9 @@ EGEnergyCorrectorSemiParm::~EGEnergyCorrectorSemiParm()
 
 //--------------------------------------------------------------------------------------------------
 void EGEnergyCorrectorSemiParm::Initialize(std::string regweights, int version) {
-    
+    _version= version;    
     if (version>=4 && version<=5) {
-      
+
       //initialize eval vector
       _vals.resize(37);
       
@@ -160,6 +161,53 @@ void EGEnergyCorrectorSemiParm::Initialize(std::string regweights, int version) 
 
 }
 
+void EGEnergyCorrectorSemiParm::CorrectedEnergyWithError(const reco::Photon &p, const reco::VertexCollection& vtxcol, double rho, EcalClusterLazyTools &clustertools, const edm::EventSetup &es, double &ecor, double &cbsigma, double &cbalpha1, double &cbn1, double &cbalpha2, double &cbn2, double &pdfpeakval) {
+ 
+  switch(_version){
+  case 4:
+    CorrectedEnergyWithErrorV4(p, vtxcol, rho, clustertools, es, ecor, cbsigma, cbalpha1, cbn1, cbalpha2, cbn2, pdfpeakval);
+    break;
+  case 5:
+    CorrectedEnergyWithErrorV5(p, vtxcol, rho, clustertools, es, ecor, cbsigma, cbalpha1, cbn1, cbalpha2, cbn2, pdfpeakval);
+    break;
+  case 6:
+    CorrectedEnergyWithErrorV5(p, vtxcol, rho, clustertools, es, ecor, cbsigma, cbalpha1, cbn1, cbalpha2, cbn2, pdfpeakval);
+    break;
+  case 7:
+    CorrectedEnergyWithErrorV5(p, vtxcol, rho, clustertools, es, ecor, cbsigma, cbalpha1, cbn1, cbalpha2, cbn2, pdfpeakval);
+    break;
+  case 8:
+    CorrectedEnergyWithErrorV5(p, vtxcol, rho, clustertools, es, ecor, cbsigma, cbalpha1, cbn1, cbalpha2, cbn2, pdfpeakval);
+    break;
+  default:
+    edm::LogError("EGEnergyCorrectorSemiParm") << "version not implemented in CorrectedEnergyWithError() method";
+    exit(1);
+  }
+}
+
+void EGEnergyCorrectorSemiParm::CorrectedEnergyWithError(const reco::GsfElectron &p, const reco::VertexCollection& vtxcol, double rho, EcalClusterLazyTools &clustertools, const edm::EventSetup &es, double &ecor, double &cbsigma, double &cbalpha1, double &cbn1, double &cbalpha2, double &cbn2, double &pdfpeakval) {
+ 
+  switch(_version){
+  case 4:
+    CorrectedEnergyWithErrorV4(p, vtxcol, rho, clustertools, es, ecor, cbsigma, cbalpha1, cbn1, cbalpha2, cbn2, pdfpeakval);
+    break;
+  case 5:
+    CorrectedEnergyWithErrorV5(p, vtxcol, rho, clustertools, es, ecor, cbsigma, cbalpha1, cbn1, cbalpha2, cbn2, pdfpeakval);
+    break;
+  case 6:
+    CorrectedEnergyWithErrorV5(p, vtxcol, rho, clustertools, es, ecor, cbsigma, cbalpha1, cbn1, cbalpha2, cbn2, pdfpeakval);
+    break;
+  case 7:
+    CorrectedEnergyWithErrorV5(p, vtxcol, rho, clustertools, es, ecor, cbsigma, cbalpha1, cbn1, cbalpha2, cbn2, pdfpeakval);
+    break;
+  case 8:
+    CorrectedEnergyWithErrorV5(p, vtxcol, rho, clustertools, es, ecor, cbsigma, cbalpha1, cbn1, cbalpha2, cbn2, pdfpeakval);
+    break;
+  default:
+    edm::LogError("EGEnergyCorrectorSemiParm") << "version not implemented in CorrectedEnergyWithError() method";
+    exit(1);
+  }
+}
 
 //--------------------------------------------------------------------------------------------------
 void EGEnergyCorrectorSemiParm::CorrectedEnergyWithErrorV4(const reco::Photon &p, const reco::VertexCollection& vtxcol, double rho, EcalClusterLazyTools &clustertools, const edm::EventSetup &es, double &ecor, double &cbsigma, double &cbalpha1, double &cbn1, double &cbalpha2, double &cbn2, double &pdfpeakval) {
